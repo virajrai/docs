@@ -1,0 +1,226 @@
+# Composite flows
+
+Learn to create onboarding experiences with welcome screens and checklists.
+
+## Overview
+
+Composite flows are comprehensive onboarding experiences that guide new users through your product. Unlike simple flows that focus on a single feature, composite flows combine a welcome screen, multiple guided tours, and a progress checklist to create a complete product introduction.
+
+These flows provide a structured yet flexible way for users to learn your product, allowing them to explore features at their own pace while ensuring they discover all key functionality.
+
+## When to use composite flows
+
+* **For new user onboarding:** Create a guided introduction to your product that helps users get started quickly. This improves activation rates by ensuring users discover key features from day one.
+* **For major releases:** Introduce existing users to multiple new features after a significant update. This increases feature adoption by highlighting what's new.
+* **For trial-to-paid conversion:** Guide trial users through your product's most valuable features before their trial expires. This improves conversion rates by showcasing your product's full value.
+* **For user re-engagement:** Welcome back dormant users with a refresher on key features and introduction to what's new. This helps reactivate users who haven't logged in recently.
+
+## How composite flows work
+
+When a composite flow is triggered, users experience:
+
+1. **Welcome screen:** First, a welcome modal appears with a friendly introduction to the onboarding experience
+2. **Checklist display:** After clicking the welcome button, a checklist appears showing all available tours
+3. **Self-directed exploration:** Users can choose which features to explore in any order
+4. **Progress tracking:** The checklist shows which tours have been completed
+5. **Completion:** When all tours are finished, the onboarding experience is complete
+
+This creates a guided yet self-paced learning experience that respects users' preferences while ensuring feature discovery.
+
+## Composite flow structure
+
+### 1. Flow definition
+
+First, define the flow itself with its basic properties:
+
+```typescript
+const onboardingFlow = {
+  id: "new-user-onboarding",    // Unique identifier
+  type: "composite",            // Specifies this as a composite flow
+  name: "New user onboarding",  // Display name
+  description: "Welcome to our platform!" // Optional description
+};
+```
+
+### 2. Welcome modal
+
+The welcome modal introduces users to your product and sets expectations for the onboarding:
+
+```typescript
+welcome: {
+  title: "Hey there 👋",                // Main headline
+  subtitle: "Welcome to Layup!",   // Subheading
+  description: "Let's take a quick, interactive tour of our platform.", // Detailed description
+  image: {
+    light: "/welcome-image-light.svg",  // Image shown in light mode
+    dark: "/welcome-image-dark.svg"     // Image shown in dark mode
+  },
+  buttonText: "Take a tour",           // Call-to-action button text
+}
+```
+
+### 3. Subflows
+
+Subflows are the individual guided tours that make up your onboarding experience. Each subflow can be either:
+
+**Guided tour subflows** — Step-by-step walkthroughs of specific features:
+
+```typescript
+subflows: [
+  {
+    id: "dashboard-tour",
+    type: "simple",
+    name: "Explore the dashboard",
+    description: "Learn about your dashboard",
+    page: "/dashboard",
+    buttonText: "Start tour",
+    allowRetrigger: true, // Optional: allow users to retake the tour
+    steps: [
+      {
+        id: "dashboard-overview",
+        type: "guided", // or "self-paced"
+        position: "dashboard-header",
+        content: {
+          description: "This is your main dashboard.",
+        },
+        action: { type: "click" }, // Optional interaction
+        showCloseButton: true // Optional close button
+      }
+    ]
+  }
+]
+```
+
+**Button-link subflows** — Direct links to external resources like documentation:
+
+```typescript
+{
+  id: "documentation",
+  type: "simple",
+  name: "View docs",
+  description: "Check out our documentation",
+  buttonText: "View docs",
+  buttonLink: "https://docs.layuplabs.ai" // External URL
+}
+```
+
+### 4. Checklist configuration
+
+The checklist helps users track their progress through the onboarding experience:
+
+```typescript
+checklistConfig: {
+  header: "Getting started 👋",
+  position: "right", // "left", "right", "top", "bottom", "top-start", "top-end", "bottom-start", "bottom-end"
+  triggerId: "show-checklist", // Optional element ID to trigger checklist
+  offset: 10, // Optional offset, if using a triggerId
+  minimizable: true,
+}
+```
+
+By default, checklists appear in the bottom-right corner of the screen:
+
+![images/layup-checklist.png](https://mintlify.s3.us-west-1.amazonaws.com/pointer-c79e5938/images/pointer-checklist.png)
+
+For more control over the checklist's position, you can use a manual trigger. This is especially useful when you want to integrate the checklist with your UI (e.g., in a sidebar) and create a more native feel. Check out how [Knowt](https://knowt.com) (ed-tech, 3.5+ million users) customizes the checklist:
+
+![images/knowt-checklist.png](https://mintlify.s3.us-west-1.amazonaws.com/pointer-c79e5938/images/knowt-checklist.png)
+
+## Using cross-page flows
+
+Composite flows can guide users across multiple pages of your application. When a subflow's page property differs from the current page, Layup will:
+
+1. Navigate the user to the specified page
+2. Wait for the page to load
+3. Start the guided tour on the new page
+
+This creates a seamless onboarding experience that spans your entire application.
+
+## Triggering composite flows
+
+Like simple flows, composite flows can be triggered via the `useFlow` hook. See our [Triggers](https://docs.layuplabs.ai/flows/triggers) page for details.
+
+## Complete example
+
+Here's a complete example of a composite flow for onboarding new users:
+
+```typescript
+const onboardingFlow = {
+  id: "new-user-onboarding",
+  type: "composite",
+  name: "New user onboarding",
+  
+  // Welcome modal
+  welcome: {
+    title: "Hey there 👋",        
+    subtitle: "Welcome to Layup!",
+    description: "Let's take a quick, interactive tour of our platform.",
+    image: "/welcome-image.svg",     
+    buttonText: "Take a tour",          
+  }
+  
+  // Subflows
+  subflows: [
+    // Dashboard tour
+    {
+      id: "dashboard-tour",
+      type: "simple",
+      name: "Explore the dashboard",
+      description: "Learn how to navigate your dashboard",
+      page: "/dashboard",
+      buttonText: "Explore dashboard",
+      steps: [
+        {
+          id: "dashboard-overview",
+          type: "self-paced" // for informational steps; for action steps, use 'guided'
+          position: "dashboard-header",
+          content: {
+            description: "This is your main dashboard where you can see all your projects and activities."
+          }
+        },
+        {
+          id: "metrics-panel",
+          type: "guided",
+          position: "metrics-panel",
+          content: {
+            description: "Here you can track your project metrics and performance."
+          }
+        }
+      ]
+    },
+    
+    // Documentation link
+    {
+      id: "documentation",
+      type: "simple",
+      name: "View docs",
+      description: "Check out our documentation.",
+      buttonText: "View docs",
+      buttonLink: "https://docs.layuplabs.ai"
+    }
+  ],
+
+  // Checklist configuration
+  showChecklist: true,               
+  checklistConfig: {
+    header: "Getting started 👋", 
+    position: "right",            
+    minimizable: true,  
+  }
+};
+```
+
+## Best practices
+
+* **Limit the number of subflows:** Keep your onboarding focused by including only 3-5 essential tours. Too many options can overwhelm users.
+* **Order subflows logically:** Arrange tours in a natural progression, with foundational features first and advanced features later.
+* **Make descriptions clear:** Each subflow should have a concise description explaining what users will learn.
+* **Use visual cues:** Include images in your welcome modal to make it engaging and set expectations.
+* **Allow skipping:** Don't force users to complete every tour; let them pick what's relevant to them.
+* **Consider user segments:** Create different onboarding flows for different user types or roles.
+* **Test thoroughly:** Verify your composite flow works across different devices, browsers, and screen sizes.
+
+## Next steps
+
+* Learn about [simple flows](https://docs.layuplabs.ai/flows/simple-flow) for focused guided tours
+* Explore [triggers](https://docs.layuplabs.ai/flows/triggers) to control when flows appear

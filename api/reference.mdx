@@ -1,0 +1,151 @@
+---
+title: 'API Reference'
+description: 'Detailed reference for the Layup Labs API endpoints'
+---
+
+# API Reference
+
+## Guide Object
+
+A Guide object represents a guide available on Layup Labs.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `guide_id` | string | Unique identifier for the guide |
+| `platform_id` | string | The platform associated with the guide |
+| `name` | string | Name of the guide |
+| `url` | string | URL to trigger the guide in Layup |
+| `permission` | string | Permission level for the guide's accessibility |
+| `role` | string | Role associated with the guide's accessibility |
+| `description` | string | Brief description of what the guide covers |
+| `created_on` | string | Timestamp when the guide was created |
+| `number_of_steps` | integer | Total number of steps in the guide |
+
+## List Guides
+
+```
+GET /{platform_id}/guidance-flows
+```
+
+Returns a paginated list of all guides available for the specified platform.
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `platform_id` | string | Yes | Platform accessing the guides |
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `permission` | string | Yes | Permission level filter |
+| `role` | string | Yes | Role filter |
+| `page` | integer | No | Page number for pagination (min: 1) |
+| `page_size` | integer | No | Number of guides per page (default: 10, max: 100) |
+
+### Response
+
+```json
+{
+  "total_guides": 25,
+  "total_pages": 3,
+  "current_page": 1,
+  "page_size": 10,
+  "guides": [
+    {
+      "guide_id": "abc123",
+      "platform_id": "myplatform",
+      "name": "Getting Started",
+      "url": "https://app.layuplabs.ai/guide/abc123",
+      "permission": "user",
+      "role": "new_user",
+      "description": "Introduction to the platform",
+      "created_on": "2023-01-15T09:30:00Z",
+      "number_of_steps": 5
+    },
+    // Additional guides...
+  ]
+}
+```
+
+## Search Guides
+
+```
+GET /{platform_id}/guidance-flows/search
+```
+
+Search for guides based on a text query.
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `platform_id` | string | Yes | Platform accessing the guides |
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `permission` | string | Yes | Permission level filter |
+| `role` | string | Yes | Role filter |
+| `query` | string | Yes | Search query |
+
+### Response
+
+```json
+{
+  "guides": [
+    {
+      "guide_id": "abc123",
+      "platform_id": "myplatform",
+      "name": "Getting Started",
+      "url": "https://app.layuplabs.ai/guide/abc123",
+      "permission": "user",
+      "role": "new_user",
+      "description": "Introduction to the platform",
+      "created_on": "2023-01-15T09:30:00Z",
+      "number_of_steps": 5
+    },
+    // Additional relevant guides...
+  ]
+}
+```
+
+## Get Guide Details
+
+```
+GET /{platform_id}/guidance-flows/{guide_id}
+```
+
+Get detailed information about a specific guide.
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `platform_id` | string | Yes | Platform accessing the guide |
+| `guide_id` | string | Yes | Unique identifier of the guide |
+
+### Response
+
+```json
+{
+  "guide_id": "abc123",
+  "platform_id": "myplatform",
+  "name": "Getting Started",
+  "url": "https://app.layuplabs.ai/guide/abc123",
+  "permission": "user",
+  "role": "new_user",
+  "description": "Introduction to the platform",
+  "created_on": "2023-01-15T09:30:00Z",
+  "number_of_steps": 5
+}
+```
+
+### Error Responses
+
+| Status Code | Description |
+|-------------|-------------|
+| 404 | Guide not found |
+| 401 | Unauthorized - invalid or missing API key |

@@ -1,0 +1,34 @@
+---
+title: 'API Overview'
+description: 'Overview of the Layup Labs API'
+---
+
+# Layup Labs API
+
+The Layup Labs API allows you to programmatically interact with guides and flows available on Layup Labs.
+
+## Base URL
+
+```
+https://api.layuplabs.ai
+```
+
+## Authentication
+
+All API requests require authentication using an API key. Include your API key in the request headers:
+
+```bash
+x-api-token: YOUR_API_KEY
+```
+
+To obtain an API key, contact the Layup Labs team or use your dashboard.
+
+## Available Endpoints
+
+| Endpoint | Description |
+|----------|-------------|
+| `GET /{platform_id}/guidance-flows` | List all guides available for your platform |
+| `GET /{platform_id}/guidance-flows/search` | Search for guides based on a query |
+| `GET /{platform_id}/guidance-flows/{guide_id}` | Get details for a specific guide |
+
+For details on request parameters and response formats, see the [API Reference](/api/reference).

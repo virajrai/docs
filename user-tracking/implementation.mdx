@@ -1,0 +1,55 @@
+To implement user tracking in your application, simply pass the userId and groupId parameters to the LayupProvider:
+
+```typescript
+import { LayupProvider } from "layup-js";
+
+function App() {
+  return (
+    <LayupProvider
+      apiKey={process.env.LAYUP_API_KEY!}
+      userId="user_123"
+      groupId="company_456"
+    >
+      {children}
+    </LayupProvider>
+  );
+}
+```
+
+<Note>
+  While `userId` is technically optional, we strongly recommend providing it to
+  ensure consistent user tracking across sessions.
+</Note>
+
+## Default Values
+
+If you don't provide a `userId`, Layup automatically generates a unique identifier for the user. This ensures that user interactions can still be tracked even before authentication.
+
+```typescript
+// For anonymous or not-yet-authenticated users
+<LayupProvider
+  apiKey={process.env.LAYUP_API_KEY!}
+  // userId not provided, will be auto-generated
+>
+  {children}
+</LayupProvider>
+```
+
+When a user logs in and you provide an actual `userId` later, the system will:
+
+1. Replace the auto-generated ID with your provided ID
+2. Associate all previous activity with the new ID
+3. Use the provided ID for all future tracking
+
+This approach allows for a seamless transition from anonymous to authenticated user tracking.
+
+```typescript
+// After user authentication
+<LayupProvider
+  apiKey={process.env.LAYUP_API_KEY!}
+  userId={authenticatedUser.id} // Replaces auto-generated ID
+  groupId={authenticatedUser.organizationId}
+>
+  {children}
+</LayupProvider>
+```

@@ -1,0 +1,101 @@
+# Getting started
+
+Learn how to set up interactive onboarding and guided product tours.
+
+## Overview
+
+Interactive flows help users discover and learn your product through step-by-step guidance. Unlike our AI chat and interactive guides, flows require explicit configuration from developers, giving you precise control over the user experience.
+
+With Layup's flows, you can:
+
+- Onboard new users with guided tours of your product
+- Highlight new features or important functionality
+- Guide users through complex workflows
+- Increase feature adoption and user engagement
+- Reduce support tickets by proactively educating users
+
+Flows are fully customizable and can be triggered automatically (when a user visits a specific page or meets certain conditions) or manually (when a user clicks a button).
+
+We're giving flows their own section because they require additional configuration and are designed for specific scenarios\\\\!
+
+<Note>
+  Note: We're working on a visual editor and browser extension to make flow
+  creation even easier. For now, flows are configured through code, giving you
+  more flexibility.
+</Note>
+
+## Getting started
+
+<Steps>
+  <Step title="Grab an API key from the Layup dashboard.">
+    Login to the [Layup dashboard](https://app.layuplabs.ai), then create a project. Two keys will be automatically generated for you — a production and development key. Copy the development key and store it.
+  </Step>
+
+  <Step title="Install the Layup SDK using your preferred package manager.">
+    <CodeGroup>
+      ```bash npm
+      npm install layup-js
+      ```
+
+      ```bash pnpm
+      pnpm add layup-js
+      ```
+
+      ```bash yarn
+      yarn add layup-js
+      ```
+    </CodeGroup>
+
+  </Step>
+
+  <Step title="Configure your environment variables.">
+    Add the appropriate Layup API key into your `.env` file.
+
+    ```bash
+    LAYUP_API_KEY=lp_dev_*********************
+    ```
+
+    <Note>
+      Note that there are two types of API keys: development and production.
+
+      * **Development keys** (`lp_dev_*`):
+        * For local development only
+        * No origin restrictions
+        * Stricter rate limits
+      * **Production keys** (`lp_live_*`):
+        * Required for deployed applications
+        * Must specify allowed origin domains
+        * Domains must be valid (e.g., example.com)
+    </Note>
+
+  </Step>
+
+  <Step title="Configure the provider">
+    Add the `LayupFlowProvider` to wrap your app, typically in a layout file that contains your authenticated routes:
+
+    ```typescript
+    import { LayupFlowProvider } from "layup-js";
+
+    function App() {
+    	return (
+    		<LayupFlowProvider
+      		 apiKey={process.env.LAYUP_API_KEY!}
+             flows={myFlows}
+            >
+      		  {children}
+    		</LayupFlowProvider>
+    	);
+    }
+    ```
+
+    See more info below on configuring the `LayupFlowProvider`.
+
+  </Step>
+</Steps>
+
+## Next steps
+
+Congrats! You've set up the `LayupFlowProvider`, and are now ready to start configuring flows.
+
+- [Simple flows](https://docs.layuplabs.ai/flows/simple-flow) — focused, step-by-step guided tours
+- [Composite flows](https://docs.layuplabs.ai/flows/composite-flow) — comprehensive onboarding experiences

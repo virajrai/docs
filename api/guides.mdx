@@ -1,0 +1,73 @@
+---
+title: 'API Guides'
+description: 'How to use the Layup Labs API effectively'
+---
+
+# API Usage Guides
+
+## Authentication
+
+All API requests to Layup Labs require authentication using an API key in the `x-api-token` header:
+
+```bash
+curl -X GET "https://api.layuplabs.ai/your-platform-id/guidance-flows" \
+  -H "x-api-token: YOUR_API_KEY" \
+  -H "Content-Type: application/json"
+```
+
+## Listing Available Guides
+
+To retrieve all guides available for your platform:
+
+```bash
+curl -X GET "https://api.layuplabs.ai/your-platform-id/guidance-flows?permission=user&role=standard" \
+  -H "x-api-token: YOUR_API_KEY"
+```
+
+### Pagination
+
+For platforms with many guides, you can paginate results:
+
+```bash
+curl -X GET "https://api.layuplabs.ai/your-platform-id/guidance-flows?permission=user&role=standard&page=2&page_size=20" \
+  -H "x-api-token: YOUR_API_KEY"
+```
+
+## Searching for Guides
+
+To find guides related to specific topics:
+
+```bash
+curl -X GET "https://api.layuplabs.ai/your-platform-id/guidance-flows/search?permission=user&role=standard&query=onboarding" \
+  -H "x-api-token: YOUR_API_KEY"
+```
+
+## Retrieving a Specific Guide
+
+To get details about a particular guide:
+
+```bash
+curl -X GET "https://api.layuplabs.ai/your-platform-id/guidance-flows/abc123" \
+  -H "x-api-token: YOUR_API_KEY"
+```
+
+## Using Guide URLs
+
+Once you have a guide's URL, you can redirect users to that URL to start the guide:
+
+```javascript
+// Example in JavaScript
+function startGuide(guideUrl) {
+  window.location.href = guideUrl;
+}
+```
+
+## Error Handling
+
+The API uses standard HTTP status codes. Common error responses include:
+
+- 401: Invalid or missing API key
+- 404: Resource not found
+- 400: Invalid request parameters
+
+Always check the response status and handle errors appropriately in your application.

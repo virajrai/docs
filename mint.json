@@ -1,0 +1,60 @@
+{
+  "name": "Layup Documentation",
+  "logo": {
+    "light": "/logo/image.png",
+    "dark": "/logo/image.png"
+  },
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#6366f1",
+    "light": "#6366f1",
+    "dark": "#3730a3"
+  },
+  "topbarLinks": [
+    {
+      "name": "Support",
+      "url": "mailto:hello@layuplabs.ai"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Dashboard",
+    "url": "https://app.layuplabs.ai"
+  },
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": ["introduction", "quickstart"]
+    },
+    {
+      "group": "AI Platform",
+      "pages": [
+        "ai/overview",
+        "ai/chat",
+        "ai/interactive-guides",
+        "ai/onboarding",
+        "ai/announcements"
+      ]
+    },
+    {
+      "group": "User Tracking",
+      "pages": ["user-tracking/overview", "user-tracking/implementation"]
+    },
+    {
+      "group": "Customization",
+      "pages": ["customization/styling"]
+    },
+    {
+      "group": "API",
+      "pages": ["api/overview", "api/reference", "api/guides"]
+    },
+    {
+      "group": "FAQs",
+      "pages": ["faqs/contact-us"]
+    }
+  ],
+  "footerSocials": {
+    "github": "https://github.com/layuplabs",
+    "twitter": "https://twitter.com/layuplabs",
+    "discord": "https://discord.gg/layuplabs"
+  }
+}

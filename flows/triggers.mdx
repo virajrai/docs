@@ -1,0 +1,131 @@
+# Flow triggers
+
+Learn how to control when and how flows appear to your users.
+
+## What are flow triggers?
+
+Flow triggers determine when and how your interactive flows appear to users. They give you precise control over the user experience, ensuring flows appear at the right moment for maximum impact.
+
+## Using the useFlow hook
+
+The `useFlow` hook allows you to trigger and control flows. Import and implementation is as follows:
+
+```typescript
+import { useFlow } from "layup-js";
+
+function HelpButton() {
+  const { startFlow } = useFlow();
+
+  return (
+    <button onClick={() => startFlow("feature-tour")} className="help-button">
+      Start Tour
+    </button>
+  );
+}
+```
+
+To start a flow, use the `startFlow` method. The `startFlow` function takes the unique ID of the flow you want to start. This ID must match the `id` property in your flow configuration.
+
+## Available methods
+
+The useFlow hook provides the following methods:
+
+```typescript
+const {
+  startFlow, // Start a specific flow by ID
+  showChecklist, // Show the checklist for a composite flow
+  getFlowProgress, // Get progress info for a specific flow
+} = useFlow();
+```
+
+### startFlow
+
+Starts a specific flow by its ID. Returns a promise that resolves when the flow is ready.
+
+```typescript
+const { startFlow } = useFlow();
+
+function StartButton() {
+  const handleStart = async () => {
+    try {
+      await startFlow("onboarding-flow");
+      console.log("Flow started successfully");
+    } catch (error) {
+      console.error("Failed to start flow:", error);
+    }
+  };
+
+  return <button onClick={handleStart}>Start Onboarding</button>;
+}
+```
+
+### showChecklist
+
+Shows the checklist UI for a composite flow. This is typically used for onboarding flows with multiple subflows.
+
+```typescript
+const { showChecklist } = useFlow();
+
+function OnboardingWidget() {
+  return (
+    <button onClick={() => showChecklist("main-onboarding")}>
+      Show Onboarding Checklist
+    </button>
+  );
+}
+```
+
+### getFlowProgress
+
+Returns detailed progress information for a specific flow, including completion status and step progress.
+
+```typescript
+const { getFlowProgress } = useFlow();
+
+function FlowProgressIndicator({ flowId }) {
+  const progress = getFlowProgress(flowId);
+
+  return (
+    <div>
+      <div className="progress-bar">
+        <div
+          className="progress-fill"
+          style={{ width: `${progress.percentage}%` }}
+        />
+      </div>
+      <div className="stats">
+        <p>Completed: {progress.isCompleted ? "Yes" : "No"}</p>
+        <p>
+          Step: {progress.currentStep + 1} of {progress.totalSteps}
+        </p>
+        <p>Progress: {progress.percentage}%</p>
+      </div>
+    </div>
+  );
+}
+```
+
+## Trigger priority and conflicts
+
+When multiple flows have triggers and their conditions are met simultaneously, Layup uses these rules to determine which flow to show:
+
+1. Only one flow can be active at a time
+2. If a flow is already active, new triggers are ignored
+3. If multiple flows trigger simultaneously, the first one registered takes priority
+
+You can manually control trigger priority by carefully ordering your flows when registering them with the provider.
+
+## Best practices
+
+- **Be conservative with automatic triggers.** Too many automatic popups create a frustrating experience. Use them sparingly for truly important moments.
+- **Consider user context.** Trigger flows when users are most likely to need them and can focus on them.
+- **Implement appropriate delays.** Give users time to get oriented before showing guidance.
+- **Use appropriate show limits.** One-time onboarding should show once, while feature guidance might benefit from occasional repetition.
+- **Test thoroughly.** Verify trigger conditions work as expected in different scenarios.
+- **Provide opt-out mechanisms.** Always let users dismiss flows they don't want to see.
+- **Track completion metrics.** Monitor how many users complete triggered flows to optimize timing and relevance.
+
+## Next steps
+
+- Learn about [simple flows](https://docs.layuplabs.ai/flows/simple-flow) for focused guided tours
+- Learn about [composite flows](https://docs.layuplabs.ai/flows/composite-flow) for comprehensive onboarding experiences

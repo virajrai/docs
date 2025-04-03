@@ -1,0 +1,203 @@
+Customize Layup's appearance to match your brand and design system.
+
+## Overview
+
+Layup's widget is designed to be highly customizable while remaining simple to configure. You can quickly adjust its appearance using our simplified color system or dive into detailed customization with advanced options.
+
+## Visual Guide
+
+Below are visual guides showing the various elements that can be styled:
+
+<Tabs>
+  <Tab title="Widget Elements">
+    <Frame>
+      <img src="/images/styling/1.png" alt="Main widget styling elements" />
+    </Frame>
+    <p>The main widget interface showing primary elements like text, icons, and accent colors.</p>
+  </Tab>
+  <Tab title="Onboarding UI">
+    <Frame>
+      <img src="/images/styling/2.png" alt="Onboarding UI styling" />
+    </Frame>
+    <p>The onboarding interface with various styled components and states.</p>
+  </Tab>
+  <Tab title="Chat Interface">
+    <Frame>
+      <img src="/images/styling/3.png" alt="Chat interface styling" />
+    </Frame>
+    <p>The chat interface showing message styling, backgrounds, and controls.</p>
+  </Tab>
+  <Tab title="Tooltips">
+    <Frame>
+      <img src="/images/styling/4.png" alt="Tooltip styling" />
+    </Frame>
+    <p>Tooltip styling with accent colors and buttons.</p>
+  </Tab>
+  <Tab title="Menu Interface">
+    <Frame>
+      <img src="/images/styling/5.png" alt="Menu interface styling" />
+    </Frame>
+    <p>The menu interface with various text and icon styling options.</p>
+  </Tab>
+  <Tab title="Trigger Button">
+    <Frame>
+      <img src="/images/styling/6.png" alt="Trigger button styling" />
+    </Frame>
+    <p>The trigger button styling showing background, border, and icon colors.</p>
+  </Tab>
+</Tabs>
+
+## Color Customization
+
+### Simple Mode
+
+The simple mode allows you to set just four key colors, from which Layup will automatically generate a complete theme:
+
+```typescript
+<LayupProvider
+  apiKey={process.env.NEXT_PUBLIC_LAYUP_API_KEY!}
+  // Simple Color Mode
+  bgDefault="#ffffff" // Background color
+  primary="#111827" // Primary text and borders
+  accent="#6366f1" // Accent color for interactive elements
+  accentText="#ffffff" // Text color on accent backgrounds
+>
+  {children}
+</LayupProvider>
+```
+
+With these four colors, Layup will automatically:
+
+- Generate secondary colors with appropriate opacity
+- Create hover states
+- Ensure proper contrast
+- Adapt to both light and dark modes
+
+### Advanced Mode
+
+For more precise control, you can specify each color individually:
+
+```typescript
+<LayupProvider
+  apiKey={process.env.NEXT_PUBLIC_LAYUP_API_KEY!}
+  // Advanced Color Mode
+  bgDefault="#ffffff" // Main background
+  bgSecondary="#f9fafb" // Secondary background (input fields, etc.)
+  borderColor="#e5e7eb" // Border color
+  primary="#111827" // Primary text
+  secondary="#6b7280" // Secondary text
+  accent="#6366f1" // Primary accent color
+  accentSecondary="#818cf8" // Secondary accent color (progress, etc.)
+  accentBg="#eff6ff" // Light accent background
+  accentText="#ffffff" // Text on accent buttons
+  hoverAccentBg="#dbeafe" // Hover state for accent backgrounds
+>
+  {children}
+</LayupProvider>
+```
+
+## Dark Mode Support
+
+Layup automatically adapts to dark mode based on user preferences. You can provide different colors for light and dark modes:
+
+```typescript
+<LayupProvider
+  apiKey={process.env.NEXT_PUBLIC_LAYUP_API_KEY!}
+  // Dark mode support
+  bgDefault={{
+    light: '#ffffff',
+    dark: '#111827'
+  }}
+  primary={{
+    light: '#111827',
+    dark: '#ffffff'
+  }}
+  accent={{
+    light: '#6366f1',
+    dark: '#818cf8'
+  }}
+  accentText={{
+    light: '#ffffff',
+    dark: '#ffffff'
+  }}
+>
+  {children}
+</LayupProvider>
+```
+
+When using advanced mode, you can specify dark mode variants for each color.
+
+## Branding
+
+Customize Layup's branding elements to match your company's identity:
+
+```typescript
+<LayupProvider
+  apiKey={process.env.NEXT_PUBLIC_LAYUP_API_KEY!}
+  // Branding customization
+  logomark="/path-to-your-logo.svg" // Your company logo
+  triggerIcon="sparkles" // Widget trigger icon
+  triggerBackground="#ffffff" // Trigger button background
+  triggerBorder="#e5e7eb" // Trigger button border
+  borderRadius="12px" // Border radius for all elements
+>
+  {children}
+</LayupProvider>
+```
+
+The `triggerIcon` can be one of: `'sparkles'`, `'help'`, `'message'`, `'zap'`, or `'layup'`.
+
+## Content Customization
+
+Personalize the widget's text and content:
+
+```typescript
+<LayupProvider
+  apiKey={process.env.NEXT_PUBLIC_LAYUP_API_KEY!}
+  // Content customization
+  welcomeMessage="Hi there 👋"
+  welcomeSubheading="How can we help?"
+  inputPlaceholder="Ask anything..."
+  suggestedItems={[
+    'How do I get started?',
+    'What are the key features?',
+    'Can you help with integration?'
+  ]}
+>
+  {children}
+</LayupProvider>
+```
+
+## Complete Example
+
+Here's a complete example combining simple color mode with other customizations:
+
+```typescript
+<LayupProvider
+  apiKey={process.env.NEXT_PUBLIC_LAYUP_API_KEY!}
+  // Simple Color Mode
+  bgDefault="#ffffff"
+  primary="#111827"
+  accent="#6366f1"
+  accentText="#ffffff"
+  // Branding
+  logomark="/logo.svg"
+  triggerIcon="help"
+  borderRadius="8px"
+  // Content
+  welcomeMessage="Hello! 👋"
+  welcomeSubheading="How can I assist you today?"
+  inputPlaceholder="Ask me anything..."
+>
+  {children}
+</LayupProvider>
+```
+
+## Troubleshooting
+
+If you encounter styling issues:
+
+1. **Verify color values**: Ensure colors are valid CSS color formats (hex, rgb, etc.)
+2. **Check dark mode config**: When using dark/light objects, both properties must be present
+3. **Browser inspection**: Use browser DevTools to inspect elements and see applied styles
+4. **Z-index conflicts**: The widget uses a high z-index (99999999) to stay on top
