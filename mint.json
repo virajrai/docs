@@ -45,7 +45,7 @@
     },
     {
       "group": "API",
-      "pages": ["api/overview", "api/reference", "api/guides"]
+      "pages": ["use-api/overview", "use-api/reference", "use-api/guides"]
     },
     {
       "group": "FAQs",
